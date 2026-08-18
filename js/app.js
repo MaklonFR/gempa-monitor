@@ -447,8 +447,8 @@ window.GempaApp = (() => {
             state.isLoading = false;
             applyFilters();
             UI.showToast({
-              title: "Data dari database",
-              message: `${normalized.length} gempa dimuat dari Supabase`,
+              title: "MaklonFR Developer",
+              message: `${normalized.length} Update gempa dimuat dari database`,
               type: "success",
             });
           }
