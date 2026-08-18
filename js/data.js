@@ -26,7 +26,7 @@ window.GempaData = (() => {
      * Untuk mode demo/data lokal saja, ubah menjadi:
      *   API_URL: null
      */
-    API_URL: "https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json",
+    API_URL: "https://data.bmkg.go.id/DataMKG/TEWS/gempadirasakan.json",
 
     /** Interval polling (ms). 60 detik sesuai spesifikasi. */
     REFRESH_INTERVAL: 60000,
