@@ -1,0 +1,12 @@
+{
+  "name": "gempa-monitor",
+  "version": "1.0.0",
+  "description": "Monitoring Gempa Bumi Indonesia Realtime",
+  "scripts": {
+    "dev": "npx http-server -p 8080 -c-1",
+    "test": "node scripts/test.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  }
+}
