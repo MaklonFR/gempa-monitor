@@ -88,6 +88,7 @@ Initialize Git: git init (Creates a hidden .git folder).
 Stage Files: git add . (Tracks all files in the current folder).
 Commit Changes: git commit -m "Initial commit" (Saves your staged snapshot).
 Rename Branch: git branch -M main (Ensures your default branch is named main)
+git push -u origin main
 ```
 
 ### ✅ Selesai Bagian 1
