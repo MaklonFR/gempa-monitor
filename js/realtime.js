@@ -175,6 +175,14 @@ window.GempaRealtime = (() => {
     stopCountdown();
   }
 
+  /**
+   * Set nilai terakhir yang sudah diproses (dari luar).
+   * Dipakai agar sinkron dengan data yang diambil dari Supabase.
+   */
+  function setLastKnownLatest(dateTime) {
+    lastKnownLatest = dateTime;
+  }
+
   /* ----------------------------------------------------------
      ONLINE / OFFLINE
      ---------------------------------------------------------- */
@@ -230,6 +238,7 @@ window.GempaRealtime = (() => {
     detectNewEarthquakes,
     start,
     stop,
+    setLastKnownLatest,
     startCountdown,
     stopCountdown,
     initOnlineStatus,

@@ -108,7 +108,7 @@ window.GempaApp = (() => {
     state.lastUpdated = new Date();
     state.isLoading = false;
 
-    // Deteksi data baru (toast) — dijalankan sebelum simpan ke Supabase
+    // Deteksi data baru (toast)
     if (hasNew && !wasEmpty) {
       newOnes.forEach((eq) => state.newIds.add(eq.id));
 
@@ -136,32 +136,7 @@ window.GempaApp = (() => {
       });
     }
 
-    // Simpan data ke database Supabase (jika dikonfigurasi),
-    // lalu render ulang dari database agar data yang tampil
-    // selalu berasal dari Supabase.
-    if (SB && SB.isReady()) {
-      SB.saveEarthquakes(list).then((res) => {
-        if (res.ok) {
-          console.log(`[GempaMonitor] ${res.count} gempa disimpan ke Supabase`);
-          // Ambil ulang dari database & render
-          SB.fetchEarthquakes().then((rows) => {
-            if (rows.length > 0) {
-              const normalized = D.normalizeEarthquakes(rows);
-              if (normalized.length > 0) {
-                state.earthquakes = normalized;
-                UI.clearError();
-                populateTanggalOptions();
-                applyFilters();
-                RT.startCountdown();
-              }
-            }
-          });
-        }
-      });
-      return; // data ditampilkan dari Supabase, bukan dari BMKG langsung
-    }
-
-    // Fallback: tanpa Supabase, tampilkan data BMKG langsung
+    // Tampilkan data BMKG langsung (real-time, tanpa menunggu Supabase)
     state.earthquakes = list;
 
     // Bersihkan error
@@ -175,6 +150,15 @@ window.GempaApp = (() => {
 
     // Countdown reset
     RT.startCountdown();
+
+    // Simpan data ke database Supabase di background (tidak menghalangi render)
+    if (SB && SB.isReady()) {
+      SB.saveEarthquakes(list).then((res) => {
+        if (res.ok) {
+          console.log(`[GempaMonitor] ${res.count} gempa disimpan ke Supabase`);
+        }
+      });
+    }
   }
 
   function onError(err) {
@@ -451,6 +435,12 @@ window.GempaApp = (() => {
               message: `${normalized.length} Update gempa dimuat dari database`,
               type: "success",
             });
+
+            // Sinkronkan lastKnownLatest agar deteksi data baru akurat
+            const latestFromDb = D.getLatestEarthquake(normalized);
+            if (latestFromDb?.dateTime) {
+              RT.setLastKnownLatest(latestFromDb.dateTime);
+            }
           }
         }
 
@@ -464,6 +454,13 @@ window.GempaApp = (() => {
               if (normalized.length > 0) {
                 state.earthquakes = normalized;
                 state.lastUpdated = new Date();
+
+                // Sinkronkan lastKnownLatest
+                const latestFromDb = D.getLatestEarthquake(normalized);
+                if (latestFromDb?.dateTime) {
+                  RT.setLastKnownLatest(latestFromDb.dateTime);
+                }
+
                 applyFilters();
               }
             }

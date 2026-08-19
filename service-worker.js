@@ -4,7 +4,7 @@
    Cache-first untuk aset statis + offline fallback.
    ============================================================ */
 
-const CACHE_NAME = "gempa-monitor-v2";
+const CACHE_NAME = "gempa-monitor-v3";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -44,6 +44,20 @@ self.addEventListener("fetch", (event) => {
 
   // Hanya GET
   if (request.method !== "GET") return;
+
+  // JANGAN cache request API eksternal (BMKG, Supabase, CDN, dll.)
+  // Ini mencegah data lama ditampilkan dari cache browser.
+  const isExternalApiRequest =
+    request.url.includes("data.bmkg.go.id") ||          // API BMKG
+    request.url.includes("supabase.co") ||              // API Supabase
+    request.url.includes("cdn.jsdelivr.net") ||         // Supabase JS CDN
+    request.url.includes("unpkg.com") ||                // Leaflet CDN
+    request.url.includes("fonts.googleapis.com") ||     // Google Fonts
+    request.url.includes("fonts.gstatic.com") ||        // Google Fonts static
+    request.url.includes("cdn.tailwindcss.com") ||      // Tailwind CDN
+    request.url.includes("tile.openstreetmap.org");     // OpenStreetMap tiles
+
+  if (isExternalApiRequest) return;
 
   // Handle navigate request: network-first (untuk app shell)
   if (request.mode === "navigate") {
