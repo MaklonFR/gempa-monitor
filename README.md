@@ -200,4 +200,3 @@ Untuk informasi resmi dan peringatan kebencanaan, selalu ikuti informasi dari [B
 
 © 2026 GEMPA MONITOR# EarthquakeAlerts
 # gempa-monitor
-# gempa-monitor
