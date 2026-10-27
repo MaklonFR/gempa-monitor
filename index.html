@@ -23,19 +23,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://v3.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-          },
-        },
-      },
-    };
-  </script>
+
+  <!-- Tailwind CSS v4 CDN -->
+  <link rel="stylesheet" href="https://tailwindcss.com">
+  <style>
+    /* Custom theme styling in v4 */
+    @theme {
+      --font-sans: "Inter", "ui-sans-serif", "system-ui", "sans-serif";
+    }
+  </style>
+
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
